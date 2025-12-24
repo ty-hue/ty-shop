@@ -4,6 +4,7 @@ import 'package:ty_shop/components/Home/HmSuggestion.dart';
 import 'package:ty_shop/components/Home/HmSlider.dart';
 import 'package:ty_shop/components/Home/Hmcategory.dart';
 import 'package:ty_shop/components/Home/HmHot.dart';
+import 'package:ty_shop/viewmodels/home.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
@@ -13,10 +14,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  // 轮播图数据
+ final List<BannerItem> _bannerList = [
+    BannerItem(id: '1', imgUrl: 'https://gips1.baidu.com/it/u=595975033,3712432608&fm=3074&app=3074&f=PNG?w=2560&h=1440'),
+    BannerItem(id: '2', imgUrl: 'https://img1.baidu.com/it/u=1270113299,345319113&fm=253&app=138&f=JPEG?w=889&h=500'),
+    BannerItem(id: '3', imgUrl: 'https://pic.rmb.bdstatic.com/623975e31fb34064900ad236d357fef5.jpeg'),
+  ];
   List<Widget> _getScrollChildren() {
     return [
       // 轮播图
-      SliverToBoxAdapter(child: HmSlider()),
+      SliverToBoxAdapter(child: HmSlider(banners: _bannerList)),
       // 间隙组件
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 分类
