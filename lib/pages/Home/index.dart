@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ty_shop/components/Home/HmCategory.dart';
 import 'package:ty_shop/components/Home/HmMoreList.dart';
 import 'package:ty_shop/components/Home/HmSuggestion.dart';
 import 'package:ty_shop/components/Home/HmSlider.dart';
-import 'package:ty_shop/components/Home/Hmcategory.dart';
 import 'package:ty_shop/components/Home/HmHot.dart';
 import 'package:ty_shop/viewmodels/home.dart';
 import 'package:ty_shop/api/home.dart';
@@ -17,15 +17,24 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   // 轮播图数据
   List<BannerItem> _bannerList = [];
+  // 分类数据
+  List<CategoryItem> _categoryList = [];
   @override
   void initState() {
     super.initState();
     _getBannerList();
+    _getCategoryList();
   }
-
+  // 获取轮播图数据
   void _getBannerList() async {
     final res = await getBannerListAPI();
     _bannerList = res;
+    setState(() {});
+  }
+  // 获取分类列表数据
+  void _getCategoryList() async{
+    final res = await getCategoryListAPI();
+    _categoryList = res;
     setState(() {});
   }
 
@@ -36,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
       // 间隙组件
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 分类
-      SliverToBoxAdapter(child: Hmcategory()),
+      SliverToBoxAdapter(child: HmCategory(categoryList: _categoryList)),
       // 间隙组件
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       SliverToBoxAdapter(child: HmSuggestion()),
