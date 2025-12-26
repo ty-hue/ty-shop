@@ -19,11 +19,14 @@ class _HomeViewState extends State<HomeView> {
   List<BannerItem> _bannerList = [];
   // 分类数据
   List<CategoryItem> _categoryList = [];
+  // 特惠推荐数据
+  SpecialOffers _specialOffers = SpecialOffers(title: '', id:'',subTypes: []);
   @override
   void initState() {
     super.initState();
     _getBannerList();
     _getCategoryList();
+    _getSpecialOffers();
   }
   // 获取轮播图数据
   void _getBannerList() async {
@@ -37,6 +40,12 @@ class _HomeViewState extends State<HomeView> {
     _categoryList = res;
     setState(() {});
   }
+  // 获取特惠推荐数据
+  void _getSpecialOffers() async{
+    final res = await getSpecialOffersAPI();
+    _specialOffers = res;
+    setState(() {});
+  }
 
   List<Widget> _getScrollChildren() {
     return [
@@ -48,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
       SliverToBoxAdapter(child: HmCategory(categoryList: _categoryList)),
       // 间隙组件
       SliverToBoxAdapter(child: SizedBox(height: 10)),
-      SliverToBoxAdapter(child: HmSuggestion()),
+      SliverToBoxAdapter(child: HmSuggestion(specialOffers: _specialOffers)),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
 
       // 爆款商品

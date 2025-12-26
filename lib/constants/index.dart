@@ -7,6 +7,7 @@ class GlobalConstants {
 
 // 请求地址接口的的常量
 class HttpConstants {
-  static const String BANNER_LIST = '/home/banner'; 
-  static const String CATEGORY_LIST = '/home/category/head';
+  static const String BANNER_LIST = '/home/banner'; // 轮播图
+  static const String CATEGORY_LIST = '/home/category/head'; //分类
+  static const String PRODUCT_LIST = '/hot/preference'; // 特惠推荐
 }
