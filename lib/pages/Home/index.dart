@@ -21,12 +21,18 @@ class _HomeViewState extends State<HomeView> {
   List<CategoryItem> _categoryList = [];
   // 特惠推荐数据
   SpecialOffers _specialOffers = SpecialOffers(title: '', id:'',subTypes: []);
+  // 热榜推荐数据
+  SpecialOffers _inVogueList = SpecialOffers(title: '', id:'',subTypes: []);
+  // 一站式推荐数据
+  SpecialOffers _oneStopList = SpecialOffers(title: '', id:'',subTypes: []);
   @override
   void initState() {
     super.initState();
     _getBannerList();
     _getCategoryList();
     _getSpecialOffers();
+    _getInVogue();
+    _getOneStop();
   }
   // 获取轮播图数据
   void _getBannerList() async {
@@ -45,6 +51,20 @@ class _HomeViewState extends State<HomeView> {
     final res = await getSpecialOffersAPI();
     _specialOffers = res;
     setState(() {});
+  }
+  // 获取热榜推荐数据
+  void _getInVogue() async{
+    final res = await getInVogueAPI();
+    setState(() {
+      _inVogueList = res;
+    });
+  }
+  // 获取一站式推荐数据
+  void _getOneStop() async{
+    final res = await getOneStopAPI();
+    setState(() {
+      _oneStopList = res;
+    });
   }
 
   List<Widget> _getScrollChildren() {
@@ -67,9 +87,9 @@ class _HomeViewState extends State<HomeView> {
           child: Flex(
             direction: Axis.horizontal,
             children: [
-              Expanded(child: HmHot()),
+              Expanded(child: HmHot(specialOffers: _inVogueList)),
               SizedBox(width: 10),
-              Expanded(child: HmHot()),
+              Expanded(child: HmHot(specialOffers: _oneStopList)),
             ],
           ),
         ),

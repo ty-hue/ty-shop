@@ -85,6 +85,7 @@ class _HmSuggestionState extends State<HmSuggestion> {
     return Container(
       width: 100,
       height: 140,
+      margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: DecorationImage(
@@ -121,7 +122,7 @@ class _HmSuggestionState extends State<HmSuggestion> {
                 Expanded(
                   flex: 1,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: _getChildrenList(),
                   ),
                 ),

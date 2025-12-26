@@ -18,3 +18,11 @@ Future<List<CategoryItem>> getCategoryListAPI() async{
 Future<SpecialOffers> getSpecialOffersAPI() async{
   return SpecialOffers.fromJSON(await dioRequest.get(HttpConstants.PRODUCT_LIST));
 }
+
+Future<SpecialOffers> getInVogueAPI() async{
+  return SpecialOffers.fromJSON(await dioRequest.get(HttpConstants.IN_VOGUE_LIST));
+}
+
+Future<SpecialOffers> getOneStopAPI() async{
+  return SpecialOffers.fromJSON(await dioRequest.get(HttpConstants.ONE_STOP_LIST));
+}
