@@ -15,6 +15,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  // 滚动控制器
+  ScrollController _scrollController = ScrollController();
   // 轮播图数据
   List<BannerItem> _bannerList = [];
   // 分类数据
@@ -25,6 +27,13 @@ class _HomeViewState extends State<HomeView> {
   SpecialOffers _inVogueList = SpecialOffers(title: '', id:'',subTypes: []);
   // 一站式推荐数据
   SpecialOffers _oneStopList = SpecialOffers(title: '', id:'',subTypes: []);
+  // 推荐列表数据
+  List<GoodDetailItem> _recommendList = [];
+  // 页码
+  int _page = 1;
+  // 是否正在加载
+  bool _isLoading = false;
+  bool _hasMore = true; // 是否还有更多数据
   @override
   void initState() {
     super.initState();
@@ -33,6 +42,15 @@ class _HomeViewState extends State<HomeView> {
     _getSpecialOffers();
     _getInVogue();
     _getOneStop();
+    _getRecommendList();
+    _registerEvent();
+  }
+  void _registerEvent(){
+    _scrollController.addListener(() {
+      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent -50){
+        _getRecommendList();
+      }
+    });
   }
   // 获取轮播图数据
   void _getBannerList() async {
@@ -66,6 +84,26 @@ class _HomeViewState extends State<HomeView> {
       _oneStopList = res;
     });
   }
+  // 获取推荐列表数据
+  void _getRecommendList() async{
+    print('执行了');
+    if(_isLoading || !_hasMore) return;
+        print('执行了1111');
+
+    _isLoading = true;
+    int requestLimit = _page * 10;
+    final res = await getRecommendListAPI({
+      'limit': requestLimit,
+    });
+    _isLoading = false;
+    setState(() {
+      _recommendList = res;
+    });
+    _page++;
+    if(res.length < 10) {
+      _hasMore = false;
+    }
+  }
 
   List<Widget> _getScrollChildren() {
     return [
@@ -96,12 +134,12 @@ class _HomeViewState extends State<HomeView> {
       ),
       SliverToBoxAdapter(child: SizedBox(height: 10)),
       // 无限滚动列表
-      HmMoreList(),
+      HmMoreList(goodDetailItems: _recommendList),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: _getScrollChildren());
+    return CustomScrollView(controller: _scrollController,slivers: _getScrollChildren());
   }
 }

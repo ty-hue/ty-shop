@@ -34,31 +34,67 @@ class CategoryItem {
   }
 }
 
-class Goods{
+class Goods {
   String id;
   String name;
   String desc;
   String price;
   String picture;
   int orderNum;
-  Goods({required this.id,required this.name,required this.desc,required this.price,required this.picture,required this.orderNum});
+  Goods({
+    required this.id,
+    required this.name,
+    required this.desc,
+    required this.price,
+    required this.picture,
+    required this.orderNum,
+  });
   factory Goods.fromJSON(Map<String, dynamic> json) {
     return Goods(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       desc: json['desc'] ?? '',
-      price: json['price'] ?? '',
+      price: json['price']?.toString() ?? '', // 将price转换为字符串
       picture: json['picture'] ?? '',
       orderNum: json['orderNum'] ?? 0,
     );
   }
 }
-class GoodsItem{
+
+
+class GoodDetailItem extends Goods {
+  int payCount;
+  GoodDetailItem({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.picture,
+    required super.orderNum,
+    required this.payCount,
+  }):super(desc: '');
+  factory GoodDetailItem.fromJSON(Map<String, dynamic> json) {
+    return GoodDetailItem(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      price: json['price']?.toString() ?? '', // 将price转换为字符串
+      picture: json['picture'] ?? '',
+      orderNum: json['orderNum'] ?? 0,
+      payCount: json['payCount'] ?? 0,
+    );
+  }
+}
+
+class GoodsItem {
   int counts;
   int pageSize;
   int pages;
   List<Goods> items;
-  GoodsItem({required this.counts,required this.pageSize,required this.pages,required this.items});
+  GoodsItem({
+    required this.counts,
+    required this.pageSize,
+    required this.pages,
+    required this.items,
+  });
   factory GoodsItem.fromJSON(Map<String, dynamic> json) {
     return GoodsItem(
       counts: json['counts'] ?? 0,
@@ -66,17 +102,16 @@ class GoodsItem{
       pages: json['pages'] ?? 0,
       items: json['items'] == null
           ? []
-          : (json['items'] as List)
-                .map((e) => Goods.fromJSON(e))
-                .toList(),
+          : (json['items'] as List).map((e) => Goods.fromJSON(e)).toList(),
     );
   }
 }
+
 class SubTypes {
   String id;
   String title;
   List<GoodsItem> goodsItems;
-  SubTypes({required this.id,required this.title,required this.goodsItems});
+  SubTypes({required this.id, required this.title, required this.goodsItems});
   factory SubTypes.fromJSON(Map<String, dynamic> json) {
     return SubTypes(
       id: json['id'] ?? '',
@@ -84,35 +119,38 @@ class SubTypes {
       goodsItems: json['goodsItems'] == null
           ? []
           : json['goodsItems'] is List
-              ? (json['goodsItems'] as List)
-                    .map((e) => GoodsItem.fromJSON(e as Map<String, dynamic>))
-                    .toList()
-              : json['goodsItems'] is Map
-                  ? [GoodsItem.fromJSON(json['goodsItems'] as Map<String, dynamic>)]
-                  : [],
+          ? (json['goodsItems'] as List)
+                .map((e) => GoodsItem.fromJSON(e as Map<String, dynamic>))
+                .toList()
+          : json['goodsItems'] is Map
+          ? [GoodsItem.fromJSON(json['goodsItems'] as Map<String, dynamic>)]
+          : [],
     );
   }
 }
+
 class SpecialOffers {
-   String id;
-   String title;
-   List<SubTypes> subTypes;
-   SpecialOffers({required this.id,required this.title,required this.subTypes});
-   factory SpecialOffers.fromJSON(Map<String, dynamic> json) {
+  String id;
+  String title;
+  List<SubTypes> subTypes;
+  SpecialOffers({
+    required this.id,
+    required this.title,
+    required this.subTypes,
+  });
+  factory SpecialOffers.fromJSON(Map<String, dynamic> json) {
     return SpecialOffers(
       id: json['id'] ?? '',
       title: json['title'] ?? '',
       subTypes: json['subTypes'] == null
           ? []
           : json['subTypes'] is List
-              ? (json['subTypes'] as List)
-                    .map((e) => SubTypes.fromJSON(e as Map<String, dynamic>))
-                    .toList()
-              : json['subTypes'] is Map
-                  ? [SubTypes.fromJSON(json['subTypes'] as Map<String, dynamic>)]
-                  : [],
+          ? (json['subTypes'] as List)
+                .map((e) => SubTypes.fromJSON(e as Map<String, dynamic>))
+                .toList()
+          : json['subTypes'] is Map
+          ? [SubTypes.fromJSON(json['subTypes'] as Map<String, dynamic>)]
+          : [],
     );
   }
 }
-
-
